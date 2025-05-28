@@ -1,1 +1,16 @@
+🥇 Gold Layer – Business-Level Tables for Reporting
 
+cus = df.groupBy("customer_id","name","state").agg(sum("total_amount"))
+cus.show()
+
+##For stored in Parquet Format,,
+
+from pyspark.sql.functions import sum
+
+# Revenue by customer
+customer_revenue = orders_clean.groupBy("customer_id", "name").agg(
+    sum("total_amount").alias("total_spent")
+)
+
+# Save gold layer
+customer_revenue.write.mode("overwrite").parquet("gold/customer_revenue")
