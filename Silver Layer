@@ -1,1 +1,44 @@
+🥈 Silver Layer – Cleansed & Enriched Data
+
+##Remove duplicates or null values
+   order_df.dropDuplicates(["order_id"])
+   order_df.na.drop().show()
+
+## Use filter
+order_df.filter(col("payment_method") == "credit_card").show()
+
+
+od_df = order_df.groupBy("customer_id","order_date").sum("quantity")
+od_df.show()
+
+##Join orders, products, and customers
+  join_df = order_df.join(product_df, on="product_id", how="inner")
+  join_df.show()
+
+  join_df.filter(join_df.order_date > "2023-01-17").show()
+
+  from pyspark.sql.functions import expr
+  join_df.withColumn("computed_price", expr("total_amount / quantity")).show()
+  final = join_df.groupBy("customer_id","product_name","category").sum("price")
+  final.show()
+  df= customers_df.join(order_df, on="customer_id", how="inner")
+  df.show()
+
+cus = df.groupBy("customer_id","name","state").agg(sum("total_amount"))
+cus.show()
+
+join_df.filter(join_df.stock_quantity < 50).show()
+
+last_df = final.join(cus, on="customer_id",how = "inner")
+last_df.show()
+
+
+##Purpose:
+
+Make data consistent and analytics-ready
+
+Example Table: order_details_enriched
+
+
+
 
